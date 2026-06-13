@@ -1,27 +1,24 @@
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+import vue from '@vitejs/plugin-vue';
 import federation from '@originjs/vite-plugin-federation';
 
 export default defineConfig({
   plugins: [
-    react(),
+    vue(),
     federation({
       name: 'ore_module',
       filename: 'remoteEntry.js',
       exposes: {
-        './InserimentoOre': './src/pages/InserimentoOre.jsx',
-        './GestioneCommesse': './src/pages/GestioneCommesse.jsx',
+        './InserimentoOre': './src/pages/InserimentoOre.vue',
+        './GestioneCommesse': './src/pages/GestioneCommesse.vue',
       },
-      shared: ['react', 'react-dom', 'react-router-dom', 'axios'],
+      shared: ['vue', 'axios'],
     }),
   ],
   server: {
     port: 5174,
     proxy: {
-      '/api': {
-        target: 'http://localhost:8002',
-        changeOrigin: true,
-      },
+      '/api': { target: 'http://localhost:8002', changeOrigin: true },
     },
   },
   preview: {
