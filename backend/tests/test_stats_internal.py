@@ -104,8 +104,14 @@ def booking_with_ore(db, operatore_user):
     db.commit()
 
 
+@pytest.fixture(autouse=True)
+def _pin_service_secret():
+    """test_ore.py modifica cm.SERVICE_SECRET in-place; ripinnandolo evita ordering bug."""
+    import routers.commesse as cm
+    cm.SERVICE_SECRET = "test-secret"
+
+
 def test_internal_delete_booking_correct_secret(client, booking_with_ore, db):
-    # Verifica presenti
     pre = db.query(RegistrazioneOre).filter(RegistrazioneOre.booking_id == booking_with_ore).count()
     assert pre == 2
 
